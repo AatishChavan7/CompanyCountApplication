@@ -16,7 +16,7 @@ Django - Web framework used for the application. Django REST Framework - For bui
 ### Installation
 To set up the project, follow these steps:
 
-1] Clone the repository: git clone https://github.com/yourusername/catalyst_count.git cd catalyst_count
+1] Clone the repository: git clone https://github.com/AatishChavan7/CompanyCountApplication.git cd catalyst_count
 
 2] Create a virtual environment and activate it: python -m venv venv source venv/bin/activate # On Windows: venv\Scripts\activate
 
