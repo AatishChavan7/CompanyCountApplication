@@ -1,0 +1,51 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Company Count Application</title>
+    <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/css/bootstrap.min.css">
+    <style>
+        body {
+            background-color: #f8f9fa; /* Light grey background for the entire page */
+            font-family: 'Arial', sans-serif;
+        }
+        .welcome-container {
+            background-color: #ffffff; /* White background for the content area */
+            border-radius: 10px; /* Rounded corners */
+            padding: 40px; /* Padding around the content */
+            box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1); /* Subtle shadow */
+            text-align: center; /* Center align the text */
+        }
+        .lead {
+            font-size: 24px;
+            font-weight: 600;
+            color: #007bff; /* Blue color for the welcome message */
+        }
+        .login-link {
+            font-size: 18px;
+            font-weight: 500;
+            color: #28a745; /* Green color for the login link */
+        }
+        .dashboard-link {
+            font-size: 18px;
+            font-weight: 500;
+            color: #17a2b8; /* Cyan color for the dashboard link */
+        }
+    </style>
+</head>
+<body>
+    <div class="container mt-5 d-flex justify-content-center align-items-center" style="height: 80vh;">
+        <div class="welcome-container">
+            <p class="lead">Welcome To Company Count Application</p>
+            {% block content %}
+            {% if user.is_authenticated %}
+                <p class="dashboard-link">You are logged in! <a href="{% url 'dashboard' %}">Go to Dashboard</a></p>
+            {% else %}
+                <p class="login-link">Please <a href="{% url 'login' %}">Log In</a> to access the application.</p>
+            {% endif %}
+            {% endblock %}
+        </div>
+    </div>
+</body>
+</html>

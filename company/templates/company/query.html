@@ -1,0 +1,109 @@
+{% extends 'company/base.html' %}
+
+{% block content %}
+<h2>Query Builder</h2>
+<form id="query-form">
+    <label for="name">Name:</label>
+    <input type="text" id="name" name="name">
+    <label for="domain">Domain:</label>
+    <input type="text" id="domain" name="domain">
+    <label for="year_founded">Year Founded:</label>
+    <input type="number" id="year_founded" name="year_founded">
+    <label for="industry">Industry:</label>
+    <input type="text" id="industry" name="industry">
+    <label for="size_range">Size Range:</label>
+    <input type="text" id="size_range" name="size_range">
+    <label for="locality">Locality:</label>
+    <input type="text" id="locality" name="locality">
+    <label for="country">Country:</label>
+    <input type="text" id="country" name="country">
+    <label for="linkedin_url">LinkedIn URL:</label>
+    <input type="text" id="linkedin_url" name="linkedin_url">
+    <button type="submit">Search</button>
+</form>
+
+<h3>Results:</h3>
+<div id="loading-message" style="display: none;">Loading...</div>
+<div id="results-count"></div>
+<ul id="results"></ul>
+<div id="pagination"></div>
+
+<script>
+    document.getElementById('query-form').addEventListener('submit', function(event) {
+        event.preventDefault();
+
+        const params = new URLSearchParams(new FormData(this));
+        const loadingMessage = document.getElementById('loading-message');
+        loadingMessage.style.display = 'block';
+
+        fetch(`/query/?${params.toString()}`)
+            .then(response => response.json())
+            .then(data => {
+                let results = document.getElementById('results');
+                let resultsCount = document.getElementById('results-count');
+                let pagination = document.getElementById('pagination');
+                results.innerHTML = '';
+                resultsCount.innerHTML = `${data.count} records found for the query`;
+                pagination.innerHTML = '';
+
+                if (data.results.length === 0) {
+                    results.innerHTML = '<li>No records found.</li>';
+                } else {
+                    data.results.forEach(company => {
+                        results.innerHTML += `
+                            <li>
+                                <strong>${company.name}</strong> - ${company.domain} - ${company.industry} - ${company.locality} - ${company.country}
+                                <br>Employees: ${company.current_employee_estimate} / ${company.total_employee_estimate}
+                                <br>Year Founded: ${company.year_founded}
+                                <br>LinkedIn URL: ${company.linkedin_url}
+                            </li>`;
+                    });
+
+                    if (data.next) {
+                        pagination.innerHTML += `<a href="${data.next}" onclick="loadPage(event, '${data.next}')">Next</a>`;
+                    }
+                    if (data.previous) {
+                        pagination.innerHTML += `<a href="${data.previous}" onclick="loadPage(event, '${data.previous}')">Previous</a>`;
+                    }
+                }
+                loadingMessage.style.display = 'none';
+            })
+            .catch(error => {
+                console.error('Error fetching data:', error);
+                document.getElementById('results-count').innerHTML = 'Error occurred while fetching data.';
+                loadingMessage.style.display = 'none';
+            });
+    });
+
+    function loadPage(event, url) {
+        event.preventDefault();
+        fetch(url)
+            .then(response => response.json())
+            .then(data => {
+                let results = document.getElementById('results');
+                let resultsCount = document.getElementById('results-count');
+                let pagination = document.getElementById('pagination');
+                results.innerHTML = '';
+                resultsCount.innerHTML = `${data.count} records found for the query`;
+                pagination.innerHTML = '';
+
+                data.results.forEach(company => {
+                    results.innerHTML += `
+                        <li>
+                            <strong>${company.name}</strong> - ${company.domain} - ${company.industry} - ${company.locality} - ${company.country}
+                            <br>Employees: ${company.current_employee_estimate} / ${company.total_employee_estimate}
+                            <br>Year Founded: ${company.year_founded}
+                            <br>LinkedIn URL: ${company.linkedin_url}
+                        </li>`;
+                });
+
+                if (data.next) {
+                    pagination.innerHTML += `<a href="${data.next}" onclick="loadPage(event, '${data.next}')">Next</a>`;
+                }
+                if (data.previous) {
+                    pagination.innerHTML += `<a href="${data.previous}" onclick="loadPage(event, '${data.previous}')">Previous</a>`;
+                }
+            });
+    }
+</script>
+{% endblock %}
