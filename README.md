@@ -18,7 +18,7 @@ File Upload: Upload CSV files containing company data, which are processed async
 Query Builder: Filter company records based on various criteria like name, domain, year founded, etc.
 Dashboard: A user dashboard that displays options and messages after login.
 
-##### Technologies
+#### Technologies
 Django - Web framework used for the application.
 Django REST Framework - For building the API.
 Celery - Asynchronous task queue for processing CSV files.
@@ -26,7 +26,7 @@ Redis - Message broker for Celery.
 PostgreSQL - Database management system.
 HTML/CSS - Frontend technologies used for the UI.
 
-###### Installation
+#### Installation
 To set up the project, follow these steps:
 
 1] Clone the repository:
@@ -52,7 +52,7 @@ python manage.py runserver
 7] Start Celery worker (in a new terminal window):
 celery -A catalyst_count worker --loglevel=info
 
-###### Configuration
+#### Configuration
 Database Configuration:
 
 Update the DATABASES setting in settings.py with your PostgreSQL credentials:
@@ -68,11 +68,11 @@ DATABASES = {
     }
 }
 
-###### Celery Configuration:
+#### Celery Configuration:
 CELERY_BROKER_URL = 'redis://localhost:6379/0'
 CELERY_RESULT_BACKEND = 'redis://localhost:6379/0'
 
-###### Usage
+#### Usage
 Base View: http://127.0.0.1:8000/ - Displays the base page.
 Login: http://127.0.0.1:8000/login/ - Allows users to log in.
 Register: http://127.0.0.1:8000/register/ - Allows new users to register.
@@ -80,5 +80,5 @@ Upload: http://127.0.0.1:8000/upload/ - Upload CSV files.
 Query: http://127.0.0.1:8000/query/ - Query company records with filters.
 Dashboard: http://127.0.0.1:8000/dashboard/ - Displays the user dashboard after login.
 
-###### Importing Data
+#### Importing Data
 python manage.py import_companies path/to/your/file.csv
